@@ -44,8 +44,8 @@ gmsh2gambit -i tpv3-200.msh -o tpv3-200.neu
  */
 
 
-lc = 25e3;
-lc_fault = 2000;
+lc = 12e3;
+lc_fault = 2500;
 
 Fault_length = 120e3;
 Fault_width = 15e3;
@@ -136,7 +136,7 @@ Field[1].FacesList = {111,112,113};
 
 // Matheval field returns "distance squared + lc/20"
 Field[2] = MathEval;
-Field[2].F = Sprintf("0.05*F1 +50*(F1/2.5e3)^2 + %g", lc_fault);
+Field[2].F = Sprintf("0.05*F1 +5*(F1/2.5e3)^2 + %g", lc_fault);
 
 //3.4.5 Managing coarsening around the nucleation Patch
 //equivalent of propagation size on element
