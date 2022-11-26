@@ -1,0 +1,43 @@
+// -*- C++ -*- (syntax highlighting)
+//
+// This spatial database specifies a depth distribution of viscosity.
+// 
+// The rough variation of Maxwell relaxation time with depth is
+//    0 km: 10,000 years (essentially elastic)
+//  -20 km:  5,000 years (essentially elastic)
+//  -30 km:    200 years
+// -100 km:    100 years
+// -400 km:     50 years
+//
+#SPATIAL_GRID.ascii 1
+SimpleGridDB {
+  num-x = 1
+  num-y = 1
+  num-z = 5
+  num-values = 13
+  space-dim = 3
+  value-names = viscosity viscous_strain_xx viscous_strain_yy viscous_strain_zz viscous_strain_xy viscous_strain_yz viscous_strain_xz total_strain_xx total_strain_yy total_strain_zz total_strain_xy total_strain_yz total_strain_xz
+  value-units = Pa*s none none none none none none none none none none none none
+  cs-data = cartesian { // Use a Cartesian coordinate system
+    to-meters = 1.0 // Coordinates are in km
+ // Specify the spatial dimension of the coordinate system
+ // This value must match the one associated with the database
+    space-dim = 3
+ } //
+}
+
+// x coordinate
+0.0
+
+// y coordinate
+0.0
+
+// z coordinates
+0.01  -20000.0  -30000.0  -100000.0  -400000.01
+
+// z  viscosity viscous_strain_xx viscous_strain_yy viscous_strain_zz viscous_strain_xy viscous_strain_yz viscous_strain_xz total_strain_xx total_strain_yy total_strain_zz total_strain_xy total_strain_yz total_strain_xz
+0.0  0.0     0.01   1.0e+22 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+0.0  0.0   -20000.0    1.0e+21 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+0.0  0.0   -30000.0    4.0e+20 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+0.0  0.0  -100000.0    2.0e+20 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+0.0  0.0  -400000.01   1.0e+20 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
