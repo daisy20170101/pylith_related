@@ -44,8 +44,8 @@ gmsh2gambit -i tpv3-200.msh -o tpv3-200.neu
  */
 
 
-lc = 12e3;
-lc_fault = 2500;
+lc = 5e3;
+lc_fault = 2000;
 
 Fault_length = 120e3;
 Fault_width = 15e3;
@@ -78,26 +78,26 @@ Plane Surface(1) = {5};
 Extrude {0,0, Zmin} { Surface{1}; }
 
 //Create the fault
-Point(100) = {-0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width  *Sin(Fault_dip), lc};
-Point(101) = {-0.5*Fault_length, 0, 0e3, lc};
-Point(102) = {0.5*Fault_length, 0,  0e3, lc};
-Point(103) = {0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width  *Sin(Fault_dip), lc};
+Point(100) = {-0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width  *Sin(Fault_dip), lc_fault};
+Point(101) = {-0.5*Fault_length, 0, 0e3, lc_fault};
+Point(102) = {0.5*Fault_length, 0,  0e3, lc_fault};
+Point(103) = {0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width  *Sin(Fault_dip), lc_fault};
 Line(100) = {100, 101};
 Line(101) = {101, 102};
 Line{101} In Surface{1};
 Line(102) = {102, 103};
 Line(103) = {103, 100};
 
-Point(106) = {0.5*Fault_length+40e3,41.4e3*Sin(15*Pi/180) ,  0e3, lc};
-Point(107) = {0.5*Fault_length+40e3,41.4e3*Sin(15*Pi/180) , -Fault_width, lc};
+Point(106) = {0.5*Fault_length+40e3,41.4e3*Sin(15*Pi/180) ,  0e3, lc_fault};
+Point(107) = {0.5*Fault_length+40e3,41.4e3*Sin(15*Pi/180) , -Fault_width, lc_fault};
 Line(104) = {107,103};
 Line(105) = {106,107};
 Line(106) = {102,106};
 Line{106} In Surface{1};
 // Line(107) = {103,102};
 
-Point(108) = {0.5*Fault_length+40e3+10e3,41.4e3*Sin(15*Pi/180) ,  0e3, lc};
-Point(109) = {0.5*Fault_length+40e3+10e3,41.4e3*Sin(15*Pi/180) , -Fault_width, lc};
+Point(108) = {0.5*Fault_length+40e3+10e3,41.4e3*Sin(15*Pi/180) ,  0e3, lc_fault};
+Point(109) = {0.5*Fault_length+40e3+10e3,41.4e3*Sin(15*Pi/180) , -Fault_width, lc_fault};
 Line(108) = {109,107};
 Line(109) = {108,109};
 Line(110) = {106,108};
@@ -118,12 +118,12 @@ Plane Surface(102) = {107};
 
 
 //There is a bug in "Attractor", we need to define a Ruled surface in FaceList
-Line Loop(206) = {100,101,102,103};
-Line Loop(207) = {104,-102,106,105};
-Line Loop(208) = {108,-105,110,109};
-Ruled Surface(111) = {206};
-Ruled Surface(112) = {207};
-Ruled Surface(113) = {208};
+//Line Loop(206) = {100,101,102,103};
+//Line Loop(207) = {104,-102,106,105};
+//Line Loop(208) = {108,-105,110,109};
+//Ruled Surface(111) = {206};
+//Ruled Surface(112) = {207};
+//Ruled Surface(113) = {208};
 
 
 Surface{100,101,102} In Volume{1};
@@ -132,7 +132,7 @@ Surface{100,101,102} In Volume{1};
 // Attractor field returns the distance to the curve (actually, the
 // distance to 100 equidistant points on the curve)
 Field[1] = Attractor;
-Field[1].FacesList = {111,112,113};
+Field[1].FacesList = {100,101,102};
 
 // Matheval field returns "distance squared + lc/20"
 Field[2] = MathEval;
@@ -150,11 +150,18 @@ Field[6].DistMax = 2*lc_fault+0.001;
 Field[7] = Min;
 Field[7].FieldsList = {2,6};
 
-Background Field = 7;
+// Background Field = 7;
 
-Physical Line("edge",111) = {100,109,103,104,108};
-Physical Surface("boundary_zpos",101) = {1};
+Physical Line("edge",111) = {100,109,104,108,103};
+Physical Point("edge",111) = {100,109,107,103};
+
 Physical Surface("fault",103) = {100,101,102};
+Physical Point("fault",103) = {100,103,107,109,101,102,106,108};
+Physical Line("fault",103) = {100,103,104,108,109,101,110,106,102,105};
+
+Physical Point("boundary_zpos",101) = {101,102,106,108};
+Physical Line("boundary_zpos",101) = {101,106,110};
+Physical Surface("boundary_zpos",101) = {1};
 Physical Surface("boundary_xpos",105) = {22};
 Physical Surface("boundary_xneg",106) = {14};
 Physical Surface("boundary_ypos",107) = {18};
