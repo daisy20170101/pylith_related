@@ -18,5 +18,5 @@ pylith  step02_coseismic.cfg mat_viscoelastic.cfg
 The distribution of coseismic slip on the fault is linearly decreasing from 1.0 m (pure left-lateral) to 0.1 m at the bottom of fault. 
 
 ![image](https://github.com/daisy20170101/pylith_related/blob/main/California/figures/dispX-coseis.png)
-Figure 2. Coseismic displacement in the entire domain. Blue lines are adaptive tetrahedra elements created by Cubit. 
+Figure 2. Coseismic displacement on a left-lateral strikeslip fault in the entire domain. Blue lines are adaptive tetrahedra elements created by Cubit. 
 
