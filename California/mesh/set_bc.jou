@@ -1,0 +1,32 @@
+block 1 volume v_domain
+block 1 name "box"
+group "fault" add node in surface fault@A
+nodeset 103 group fault
+nodeset 103 name "fault"
+group "boundary_xneg" add node in surface 5
+nodeset 106 group boundary_xneg
+nodeset 106 name "boundary_xneg"
+group "boundary_xpos" add node in surface 7
+nodeset 105 group boundary_xpos
+nodeset 105 name "boundary_xpos"
+group "boundary_yneg" add node in surface 4
+nodeset 108 group boundary_yneg
+nodeset 108 name "boundary_yneg"
+group "boundary_ypos" add node in surface 6
+nodeset 107 group boundary_ypos
+nodeset 107 name "boundary_ypos"
+group "boundary_zneg" add node in surface 3
+nodeset 109 group boundary_zneg
+nodeset 109 name "boundary_zneg"
+group "boundary_zpos" add node in surface 2
+nodeset 101 group boundary_zpos
+nodeset 101 name "boundary_zpos"
+group "fault_top_edge" add node in curve 18
+nodeset 11 group fault_top_edge
+nodeset 11 name "fault_top_edge"
+group "fault_edge" add node in curve1@A
+group "fault_edge" add node in curve2@A
+group "fault_edge" add node in curve3@A
+nodeset 12 group fault_edge
+nodeset 12 name "fault_edge"
+export mesh "planar4.exo" dimension 3 overwrite
