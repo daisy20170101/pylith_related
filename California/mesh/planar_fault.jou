@@ -1,0 +1,34 @@
+${Units(si)}
+reset
+create vertex x {-60000.000000} y {0.000000} z {0.000000}
+${idPtTopeS1=Id("vertex")}
+create vertex x {-60000.000000} y {0.000000} z {-10000.000000}
+${idPtTopeS2=Id("vertex")}
+create curve vertex {idPtTopeS1} {idPtTopeS2}
+curve {Id("curve")} name "curve1"
+create vertex x {60000.000000} y {0.000000} z {-10000.000000}
+${idPtTopeS3=Id("vertex")}
+create curve vertex {idPtTopeS2} {idPtTopeS3}
+curve {Id("curve")} name "curve2"
+create vertex x {60000.000000} y {0.000000} z {0.000000}
+${idPtTopeS4=Id("vertex")}
+create curve vertex {idPtTopeS3}  {idPtTopeS4}
+curve {Id("curve")} name "curve3"
+create curve vertex {idPtTopeS4}  {idPtTopeS1}
+curve {Id("curve")} name "curve4"
+create surface curve all
+surface {Id("surface")} name "fault"
+${blockLength=200000}
+${blockWidth=100000}
+${blockHeight=50000}
+brick x {blockLength} y {blockWidth} z {blockHeight}
+${idVol=Id("volume")}
+volume {idVol} name "v_domain"
+volume v_domain move x {0.0} y {0.0} z {-0.5*blockHeight}
+chop volume v_domain with volume 1
+delete body 3
+imprint all with volume all
+merge all
+volume all scheme tetmesh
+volume all size {2.50e3}
+mesh volume all

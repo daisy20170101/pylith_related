@@ -45,17 +45,15 @@ gmsh2gambit -i tpv3-200.msh -o tpv3-200.neu
 
 
 lc = 5e3;
-lc_fault = 2000;
+lc_fault = 2500;
+surf = -0.1e-3;
 
 Fault_length = 120e3;
-Fault_width = 15e3;
+Fault_width = 20e3;
 Fault_dip = 90*Pi/180.;
 
-//Nucleation in X,Z local coordinates
-X_nucl = 0e3;
-Width_nucl = 0.5*Fault_width;
-R_nucl = 1.5e3;
-lc_nucl = 200;
+//seismogenic depth;
+Width_seismo = 15e3;
 
 Xmax = 140e3;
 Xmin = -80e3;
@@ -65,10 +63,10 @@ Zmin = -50e3;
 
 
 //Create the Volume
-Point(1) = {Xmin, Ymin, 0, lc};
-Point(2) = {Xmin, Ymax, 0, lc};
-Point(3) = {Xmax, Ymax, 0, lc};
-Point(4) = {Xmax, Ymin, 0, lc};
+Point(1) = {Xmin, Ymin,surf , lc};
+Point(2) = {Xmin, Ymax, surf, lc};
+Point(3) = {Xmax, Ymax, surf, lc};
+Point(4) = {Xmax, Ymin, surf, lc};
 Line(1) = {1, 2};
 Line(2) = {2, 3};
 Line(3) = {3, 4};
@@ -78,17 +76,17 @@ Plane Surface(1) = {5};
 Extrude {0,0, Zmin} { Surface{1}; }
 
 //Create the fault
-Point(100) = {-0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width  *Sin(Fault_dip), lc_fault};
-Point(101) = {-0.5*Fault_length, 0, 0e3, lc_fault};
-Point(102) = {0.5*Fault_length, 0,  0e3, lc_fault};
-Point(103) = {0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width  *Sin(Fault_dip), lc_fault};
+Point(100) = {-0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width, lc_fault};
+Point(101) = {-0.5*Fault_length, 0, surf, lc_fault};
+Point(102) = {0.5*Fault_length, 0,  surf, lc_fault};
+Point(103) = {0.5*Fault_length, Fault_width  *Cos(Fault_dip), -Fault_width, lc_fault};
 Line(100) = {100, 101};
 Line(101) = {101, 102};
 Line{101} In Surface{1};
 Line(102) = {102, 103};
 Line(103) = {103, 100};
 
-Point(106) = {0.5*Fault_length+40e3,41.4e3*Sin(15*Pi/180) ,  0e3, lc_fault};
+Point(106) = {0.5*Fault_length+40e3,41.4e3*Sin(15*Pi/180) ,  surf, lc_fault};
 Point(107) = {0.5*Fault_length+40e3,41.4e3*Sin(15*Pi/180) , -Fault_width, lc_fault};
 Line(104) = {107,103};
 Line(105) = {106,107};
@@ -96,7 +94,7 @@ Line(106) = {102,106};
 Line{106} In Surface{1};
 // Line(107) = {103,102};
 
-Point(108) = {0.5*Fault_length+40e3+10e3,41.4e3*Sin(15*Pi/180) ,  0e3, lc_fault};
+Point(108) = {0.5*Fault_length+40e3+10e3,41.4e3*Sin(15*Pi/180) ,  surf, lc_fault};
 Point(109) = {0.5*Fault_length+40e3+10e3,41.4e3*Sin(15*Pi/180) , -Fault_width, lc_fault};
 Line(108) = {109,107};
 Line(109) = {108,109};
@@ -152,12 +150,12 @@ Field[7].FieldsList = {2,6};
 
 // Background Field = 7;
 
-Physical Line("edge",111) = {100,109,104,108,103};
+Physical Line("edge",111) = {100,103,104,108,109};
 Physical Point("edge",111) = {100,109,107,103};
 
 Physical Surface("fault",103) = {100,101,102};
 Physical Point("fault",103) = {100,103,107,109,101,102,106,108};
-Physical Line("fault",103) = {100,103,104,108,109,101,110,106,102,105};
+Physical Line("fault",103) = {100,103,104,108,109,102,105};
 
 Physical Point("boundary_zpos",101) = {101,102,106,108};
 Physical Line("boundary_zpos",101) = {101,106,110};
