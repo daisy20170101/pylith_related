@@ -8,7 +8,7 @@ SimpleDB {
   num-values = 4 // number of material property values
   value-names =  final_slip_left_lateral  final_slip_reverse final_slip_opening   initiation_time // names of the material property values
   value-units =  m m m year // units
-  num-locs = 4 // number of locations
+  num-locs = 7 // number of locations
   data-dim = 1
   space-dim = 3
   cs-data = cartesian {
@@ -25,8 +25,8 @@ SimpleDB {
 -60000.0  0.0  -10000.0   0.0  0.0  0.0  9.999999
 -50000.0  0.0  -10000.0   1.0  0.0  0.0  9.999999
 -20000.0  0.0  -10000.0   1.0  0.0  0.0  9.999999
-20000.0  0.0  -10000.0   0.0  0.0  0.0  9.999999
+0.0  0.0  -10000.0   0.0  0.0  0.0  9.999999
 20000.0  0.0  -10000.0   1.0  0.0  0.0  9.999999
 50000.0  0.0  -10000.0   1.0  0.0  0.0  9.999999
-600000.0  0.0  -10000.0   0.0  0.0  0.0  9.999999
+60000.0  0.0  -10000.0   0.0  0.0  0.0  9.999999
 
